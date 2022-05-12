@@ -5,6 +5,14 @@ class AllTaskService {
   createTask(alltasks) {
     return axios.post(TODOLIST_API_BASE_URL, alltasks);
   }
+
+  updateLineOnTask(id) {
+    return axios.put(TODOLIST_API_BASE_URL + "/" + id);
+  }
+
+  getAlldataOnload() {
+    return axios.get(TODOLIST_API_BASE_URL + "/showall");
+  }
 }
 
 export default new AllTaskService();
