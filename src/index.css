@@ -20,3 +20,7 @@ code {
   display: block;
   color: red;
 }
+
+.active {
+  color: red;
+}
