@@ -4,10 +4,10 @@ import UserService from "../service/UserService";
 
 function LoginComponent() {
   const navigate = useNavigate();
-  const [emailId, setEmailId] = useState("");
+  const [userName, setUserName] = useState("");
   const [userPassword, setUserPassword] = useState("");
-  function ChangeEmailId(e) {
-    setEmailId(e.target.value);
+  function ChangeUserName(e) {
+    setUserName(e.target.value);
   }
 
   function changePassword(e) {
@@ -16,11 +16,11 @@ function LoginComponent() {
   function loginDone(e) {
     e.preventDefault();
     let user = {
-      emailId: emailId,
+      userName: userName,
       userPassword: userPassword,
     };
     console.log("user=>" + JSON.stringify(user));
-    if (emailId !== "" && userPassword !== "") {
+    if (userName !== "" && userPassword !== "") {
       UserService.loginUser(user).then((res) => {
         console.log(res);
         if (res.data.status === 200) {
@@ -28,7 +28,7 @@ function LoginComponent() {
           navigate("/TodoList");
         } else if (res.data.status === 404 || res.data.status === 401) {
           document.getElementById("wrong_email").innerHTML =
-            "Please Enter valid Creadentials !";
+            "Please Enter valid Credentials !";
         }
 
         document.getElementById("notFilled").innerHTML = "";
@@ -54,7 +54,7 @@ function LoginComponent() {
             id="emial"
             aria-describedby="emailHelp"
             placeholder="Enter email"
-            onChange={ChangeEmailId}
+            onChange={ChangeUserName}
           />
         </div>
         <div className="form-group">

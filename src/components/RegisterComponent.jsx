@@ -67,6 +67,9 @@ function RegisterComponent() {
         if (res.data.status === 200) {
           document.getElementById("wrong_email").innerHTML = "";
           navigate("/LoginComponent");
+        } else if (res.data.status === 409) {
+          document.getElementById("wrong_email").innerHTML =
+            "User Already Present !";
         } else if (res.data.status === 400) {
           document.getElementById("wrong_email").innerHTML =
             "Please Enter valid email !";
