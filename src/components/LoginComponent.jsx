@@ -25,6 +25,9 @@ function LoginComponent() {
         console.log(res);
         if (res.data.status === 200) {
           document.getElementById("wrong_email").innerHTML = "";
+          localStorage.setItem("token", res.data.obj.token);
+          localStorage.setItem("userName", res.data.obj.userName);
+          localStorage.setItem("organisation", res.data.obj.organisation);
           navigate("/TodoList");
         } else if (res.data.status === 404 || res.data.status === 401) {
           document.getElementById("wrong_email").innerHTML =

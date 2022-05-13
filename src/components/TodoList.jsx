@@ -71,13 +71,16 @@ function TodoList() {
   return (
     <>
       <div className="">
-        <h1 className="text-center">TodoList</h1>
+        <h1 className="text-center">
+          {localStorage.getItem("organisation")} TodoList
+        </h1>
         <div className="container">
           <div className="row">
             {/* {submitTaskAdd}  using directly like this problematic */}
             <div className="card col-md-6 offset-md-3 ">
               <h3 className="text-center">
-                You have {submitTaskAdd.length} Todos
+                {localStorage.getItem("userName")} have {submitTaskAdd.length}{" "}
+                Todos
               </h3>
               <div className="card-body">
                 <table class="table table-hover">
