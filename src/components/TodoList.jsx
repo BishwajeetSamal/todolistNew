@@ -83,6 +83,55 @@ function TodoList() {
                 Todos
               </h3>
               <div className="card-body">
+              <form>
+                  <div className="text-center text-muted">
+                    <h3>Add Task</h3>
+                  </div>
+                  <div class="form-group">
+                    <label className="text-muted">Add Task</label>
+                    <input
+                      type="text"
+                      placeholder="Add task"
+                      name="firstname"
+                      className="form-control"
+                      value={task}
+                      onChange={changeTasks}
+                      checked
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label className="text-muted" for="tasktime">
+                      Add Due Date:
+                    </label>
+                    <input
+                      type="datetime-local"
+                      id="tasktime"
+                      className="form-control"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label className="text-muted" for="email">
+                      Email:
+                    </label>
+                    <input
+                      type="email"
+                      id="emailId"
+                      className="form-control"
+                      placeholder="Enter Email"
+                      onChange={checkEmail}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <button className="btn btn-success mt-1" onClick={saveTask}>
+                      Save
+                    </button>
+                  </div>
+                  <h2 id="showMsg" class="hideMessage">
+                    This heading is hidden
+                  </h2>
+
+                  <span style={{ marginTop: "10px" }}></span>
+                </form>
                 <table class="table table-hover">
                   <thead>
                     <tr>
@@ -152,55 +201,24 @@ function TodoList() {
                     })}
                   </tbody>
                 </table>
-                <form>
-                  <div className="text-center text-muted">
-                    <h3>Add Task</h3>
-                  </div>
-                  <div class="form-group">
-                    <label className="text-muted">Add Task</label>
-                    <input
-                      type="text"
-                      placeholder="Add task"
-                      name="firstname"
-                      className="form-control"
-                      value={task}
-                      onChange={changeTasks}
-                      checked
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label className="text-muted" for="tasktime">
-                      Add Due Date:
-                    </label>
-                    <input
-                      type="datetime-local"
-                      id="tasktime"
-                      className="form-control"
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label className="text-muted" for="email">
-                      Email:
-                    </label>
-                    <input
-                      type="email"
-                      id="emailId"
-                      className="form-control"
-                      placeholder="Enter Email"
-                      onChange={checkEmail}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <button className="btn btn-success mt-1" onClick={saveTask}>
-                      Save
-                    </button>
-                  </div>
-                  <h2 id="showMsg" class="hideMessage">
-                    This heading is hidden
-                  </h2>
-
-                  <span style={{ marginTop: "10px" }}></span>
-                </form>
+  <div style={{float:"right"}}> 
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+    <li class="page-item">
+      <a class="page-link" href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item">
+      <a class="page-link" href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav></div>
               </div>
             </div>
           </div>

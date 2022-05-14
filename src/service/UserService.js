@@ -11,6 +11,15 @@ class UserService {
     console.log(usr);
     return axios.post(TODOLIST_API_BASE_URL + "/login", usr);
   }
+
+  async userLogout() {
+    const config={
+      headers:{
+        Authorization:localStorage.getItem("token")
+    }};
+    const res =await axios.post(TODOLIST_API_BASE_URL + "/logout",null,config);
+    return res;
+  }
 }
 
 export default new UserService();
