@@ -7,10 +7,8 @@ function TodoList() {
 
   useEffect(() => {
     AllTaskService.getAlldataOnload().then((res) => {
-      console.log(res);
-      //submitTaskAdd(res);
       if (res) {
-        let dta = res.data || [];
+        let dta = res.data.obj || [];
         setSubmitTaskAdd(dta);
       }
     });
@@ -19,10 +17,7 @@ function TodoList() {
   function checkEmail() {}
   function makeTrue(id) {
     AllTaskService.updateLineOnTask(id).then((res) => {
-      console.log(res);
       if (res.data.active === true) {
-        console.log("d=---------");
-        console.log("class_" + res.data.id);
         let text = document.getElementsByClassName("class_" + res.data.id)[0]
           .innerText;
         document.getElementsByClassName("class_" + res.data.id)[0].innerHTML =
@@ -45,8 +40,6 @@ function TodoList() {
     let getTime = document.getElementById("tasktime").value;
     let getEmailid = document.getElementById("emailId").value;
     // validation(email);
-    console.log(getTime);
-    console.log(getEmailid);
     e.preventDefault();
     if (task !== "") {
       let getTask = {
@@ -58,9 +51,8 @@ function TodoList() {
       };
 
       AllTaskService.createTask(getTask).then((res) => {
-        console.log(res.data);
         const temp = submitTaskAdd;
-        temp.push(res.data);
+        temp.push(res.data.obj);
         setSubmitTaskAdd(temp);
         setTasks("");
       });
