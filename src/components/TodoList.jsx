@@ -66,9 +66,17 @@ function TodoList() {
       };
 
       AllTaskService.createTask(getTask).then((res) => {
-        const temp = submitTaskAdd;
-        temp.push(res.data.obj);
-        setSubmitTaskAdd(temp);
+        console.log(res);
+        if(res!=null){
+          AllTaskService.getAlldataOnload(1).then((resp) => {
+            if (resp) {
+              let dta = resp.data.obj.tasks.content || [];
+              let setCount = resp.data.obj.count || 0;
+              setSubmitTaskAdd(dta);
+              setTotalCountRecord(setCount);
+            }
+          });
+        }
         setTasks("");
       });
     } else {
@@ -86,7 +94,7 @@ function TodoList() {
             {/* {submitTaskAdd}  using directly like this problematic */}
             <div className="card col-md-6 offset-md-3 ">
               <h3 className="text-center">
-                {localStorage.getItem("userName")} have {submitTaskAdd.length}{" "}
+                {localStorage.getItem("userName")} have {totalcountRecord}{" "}
                 Todos
               </h3>
               <div className="card-body">
