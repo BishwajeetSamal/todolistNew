@@ -20,6 +20,19 @@ class AllTaskService {
       headers: { Authorization: localStorage.getItem("token") },
     });
   }
+
+  getSearchData(textSearch) {
+    let pagedata = 4;
+    let pageNumber = 1;
+    
+    if(textSearch===""){
+      textSearch="**None**";
+    }
+    return axios.post(TODOLIST_API_BASE_URL + "/searchall/"+pageNumber+"/"+pagedata+"",textSearch, {
+      headers: { Authorization: localStorage.getItem("token") },
+    });
+  }
+
 }
 
 export default new AllTaskService();

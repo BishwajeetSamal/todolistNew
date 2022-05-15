@@ -5,6 +5,7 @@ function TodoList() {
   const [task, setTasks] = useState("");
   const [totalcountRecord, setTotalCountRecord] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
+  const [searchText, setSearchText] = useState("");
 
   const handlePreviousClick = () => {
     setPageNumber((count) => count - 1);
@@ -47,6 +48,20 @@ function TodoList() {
     setTasks(e.target.value);
   }
 
+  let changeSearch = (e) =>{
+    setSearchText(e.target.value);
+  }
+
+  function seachByTask(){
+    console.log(searchText);
+    AllTaskService.getSearchData(searchText).then((res) => {
+      if (res) {
+        let dta = res.data.obj.tasks.content || [];
+        setSubmitTaskAdd(dta);
+      }
+    });
+
+  }
   // function validation(email) {
   //   console.log(email);
   //   console.log(Date.now());
@@ -102,7 +117,7 @@ function TodoList() {
                   <div className="text-center text-muted">
                     <h3>Add Task</h3>
                   </div>
-                  <div class="form-group">
+                  <div className="form-group">
                     <label className="text-muted">Add Task</label>
                     <input
                       type="text"
@@ -141,13 +156,23 @@ function TodoList() {
                       Save
                     </button>
                   </div>
-                  <h2 id="showMsg" class="hideMessage">
+                  <h2 id="showMsg" className="hideMessage">
                     This heading is hidden
                   </h2>
 
                   <span style={{ marginTop: "10px" }}></span>
                 </form>
-                <table class="table table-hover">
+                <div class="row mt-3 align-items-center">
+        <div class="col col-md-4">
+            <input class="form-control border-secondary rounded-pill pr-5" type="search" placeholder="search" id="search_input" onChange={changeSearch}/> 
+        </div>
+        <div class="col-auto">
+            <button class="btn btn btn-success  border-0 rounded-pill" onClick={seachByTask} type="button">
+                Search
+            </button>
+        </div>
+    </div>
+                <table className="table table-hover">
                   <thead>
                     <tr>
                       <th scope="col">#</th>
@@ -207,7 +232,7 @@ function TodoList() {
                             ).toLocaleTimeString()}
                           </td>
                           <td>
-                            <button type="button" class="btn btn-primary">
+                            <button type="button" className="btn btn-primary">
                               Edit
                             </button>
                           </td>
@@ -218,15 +243,15 @@ function TodoList() {
                 </table>
                 <div style={{ float: "right" }}>
                   <nav aria-label="Page navigation example">
-                    <ul class="pagination">
-                      <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Previous" onClick={handlePreviousClick} style={{ pointerEvents: pageNumber <= 1 ? "none" : "", color: pageNumber <= 1 ? "gray" : "" }}><span aria-hidden="true">&laquo;</span>
+                    <ul className="pagination">
+                      <li className="page-item">
+                        <a className="page-link" href="#" aria-label="Previous" onClick={handlePreviousClick} style={{ pointerEvents: pageNumber <= 1 ? "none" : "", color: pageNumber <= 1 ? "gray" : "" }}><span aria-hidden="true">&laquo;</span>
                         </a>
                       </li>
 
-                      <li class="page-item"><a class="page-link" href="#">{pageNumber}</a></li>
+                      <li className="page-item"><a className="page-link" href="#">{pageNumber}</a></li>
 
-                      <li class="page-item"><a class="page-link" aria-label="Next" onClick={handleNextClick} style={{ pointerEvents: pageNumber >= Math.ceil(totalcountRecord / 4) ? "none" : "", color: pageNumber >= Math.ceil(totalcountRecord / 4) ? "gray" : "" }}> <span aria-hidden="true">&raquo;</span></a></li>
+                      <li className="page-item"><a className="page-link" aria-label="Next" onClick={handleNextClick} style={{ pointerEvents: pageNumber >= Math.ceil(totalcountRecord / 4) ? "none" : "", color: pageNumber >= Math.ceil(totalcountRecord / 4) ? "gray" : "" }}> <span aria-hidden="true">&raquo;</span></a></li>
                     </ul>
                   </nav></div>
               </div>
