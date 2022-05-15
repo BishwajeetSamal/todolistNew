@@ -14,8 +14,9 @@ class AllTaskService {
     });
   }
 
-  getAlldataOnload() {
-    return axios.get(TODOLIST_API_BASE_URL + "/showall", {
+  getAlldataOnload(pageNumber) {
+    let pagedata = 4;
+    return axios.get(TODOLIST_API_BASE_URL + "/showall/"+pageNumber+"/"+pagedata+"", {
       headers: { Authorization: localStorage.getItem("token") },
     });
   }

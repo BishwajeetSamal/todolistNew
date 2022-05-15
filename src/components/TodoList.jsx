@@ -3,18 +3,33 @@ import AllTaskService from "../service/AllTaskService";
 
 function TodoList() {
   const [task, setTasks] = useState("");
+  const [totalcountRecord, setTotalCountRecord] = useState(0);
+  const [pageNumber, setPageNumber] = useState(1);
+
+  const handlePreviousClick = () => {
+    setPageNumber((count) => count - 1);
+  }
+
+
+  const handleNextClick = () => {
+    setPageNumber((count) => count + 1);
+  }
+
+
   const [submitTaskAdd, setSubmitTaskAdd] = useState([]);
 
   useEffect(() => {
-    AllTaskService.getAlldataOnload().then((res) => {
+    AllTaskService.getAlldataOnload(pageNumber).then((res) => {
       if (res) {
-        let dta = res.data.obj || [];
+        let dta = res.data.obj.tasks.content || [];
+        let setCount = res.data.obj.count || 0;
         setSubmitTaskAdd(dta);
+        setTotalCountRecord(setCount);
       }
     });
-  }, []);
+  }, [pageNumber]);
 
-  function checkEmail() {}
+  function checkEmail() { }
   function makeTrue(id) {
     AllTaskService.updateLineOnTask(id).then((res) => {
       if (res.data.active === true) {
@@ -75,7 +90,7 @@ function TodoList() {
                 Todos
               </h3>
               <div className="card-body">
-              <form>
+                <form>
                   <div className="text-center text-muted">
                     <h3>Add Task</h3>
                   </div>
@@ -193,24 +208,19 @@ function TodoList() {
                     })}
                   </tbody>
                 </table>
-  <div style={{float:"right"}}> 
-  <nav aria-label="Page navigation example">
-    <ul class="pagination">
-    <li class="page-item">
-      <a class="page-link" href="#" aria-label="Previous">
-        <span aria-hidden="true">&laquo;</span>
-      </a>
-    </li>
-    <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-    <li class="page-item">
-      <a class="page-link" href="#" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-      </a>
-    </li>
-  </ul>
-</nav></div>
+                <div style={{ float: "right" }}>
+                  <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                      <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Previous" onClick={handlePreviousClick} style={{ pointerEvents: pageNumber <= 1 ? "none" : "", color: pageNumber <= 1 ? "gray" : "" }}><span aria-hidden="true">&laquo;</span>
+                        </a>
+                      </li>
+
+                      <li class="page-item"><a class="page-link" href="#">{pageNumber}</a></li>
+
+                      <li class="page-item"><a class="page-link" aria-label="Next" onClick={handleNextClick} style={{ pointerEvents: pageNumber >= Math.ceil(totalcountRecord / 4) ? "none" : "", color: pageNumber >= Math.ceil(totalcountRecord / 4) ? "gray" : "" }}> <span aria-hidden="true">&raquo;</span></a></li>
+                    </ul>
+                  </nav></div>
               </div>
             </div>
           </div>
