@@ -1,11 +1,37 @@
 import React, { useState, useEffect } from "react";
-import AllTaskService from "../service/AllTaskService";
+import AllTaskService from "../service/AllTaskService"; 
+import {Button,Form,Modal} from "react-bootstrap";
 
 function TodoList() {
   const [task, setTasks] = useState("");
+  const [timeVal, seTimeVal] = useState("");
+  const [desc, setDesc] = useState("");
   const [totalcountRecord, setTotalCountRecord] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
   const [searchText, setSearchText] = useState("");
+
+  const [show, setShow] = useState(false);
+  const [editTaskVal, setEditTaskVal] = useState("");
+  const [editDescVal, setEditDescVal] = useState("");
+  const [editTimeVal, setEditTimeVal] = useState("");
+
+  const handleClose = () => setShow(false);
+  const handleShow = (data) => {
+    console.log("data==========================>>>");
+    console.log(data);
+    setEditTaskVal(data.taskrow);
+    setEditDescVal(data.description);
+    setEditTimeVal(data.deadLine);
+    
+    
+    console.log(editTimeVal);
+    //  let taskName = document.getElementById("task_"+id).innerHTML;
+    // console.log(taskName);
+    
+    //  document.getElementById("taskedit_detail").innerHTML=taskName;
+    setShow(true);
+  };
+
 
   const handlePreviousClick = () => {
     setPageNumber((count) => count - 1);
@@ -20,17 +46,17 @@ function TodoList() {
   const [submitTaskAdd, setSubmitTaskAdd] = useState([]);
 
   useEffect(() => {
-    AllTaskService.getAlldataOnload(pageNumber).then((res) => {
+    AllTaskService.getSearchData(pageNumber,searchText).then((res) => {
       if (res) {
-        let dta = res.data.obj.tasks.content || [];
+        console.log(res);
+        let dta = res.data.obj.tasks || [];
         let setCount = res.data.obj.count || 0;
         setSubmitTaskAdd(dta);
         setTotalCountRecord(setCount);
       }
     });
-  }, [pageNumber]);
+  }, [pageNumber,searchText]);
 
-  function checkEmail() { }
   function makeTrue(id) {
     AllTaskService.updateLineOnTask(id).then((res) => {
       if (res.data.active === true) {
@@ -48,27 +74,35 @@ function TodoList() {
     setTasks(e.target.value);
   }
 
+  function changeTime(e){
+    seTimeVal(e.target.value);
+  }
+
+  function changeText(e){
+    setDesc(e.target.value);
+    console.log(e.target.value);
+  }
+
   let changeSearch = (e) =>{
     setSearchText(e.target.value);
   }
 
-  function seachByTask(){
-    console.log(searchText);
-    AllTaskService.getSearchData(searchText).then((res) => {
-      if (res) {
-        let dta = res.data.obj.tasks.content || [];
-        setSubmitTaskAdd(dta);
-      }
-    });
+  // function seachByTask(){
+  //   AllTaskService.getSearchData(searchText).then((res) => {
+  //     if (res) {
+  //       let dta = res.data.obj.tasks.content || [];
+  //       setSubmitTaskAdd(dta);
+  //     }
+  //   });
 
-  }
+  // }
   // function validation(email) {
   //   console.log(email);
   //   console.log(Date.now());
   // }
   function saveTask(e) {
     let getTime = document.getElementById("tasktime").value;
-    let getEmailid = document.getElementById("emailId").value;
+    let getDesc = desc;
     // validation(email);
     e.preventDefault();
     if (task !== "") {
@@ -77,15 +111,17 @@ function TodoList() {
         userId: 1,
         isActive: false,
         userTime: getTime,
-        emailId: getEmailid,
+        description: getDesc,
       };
+      console.log(getTask);
 
       AllTaskService.createTask(getTask).then((res) => {
         console.log(res);
         if(res!=null){
           AllTaskService.getAlldataOnload(1).then((resp) => {
             if (resp) {
-              let dta = resp.data.obj.tasks.content || [];
+              console.log(resp);
+              let dta = resp.data.obj.tasks || [];
               let setCount = resp.data.obj.count || 0;
               setSubmitTaskAdd(dta);
               setTotalCountRecord(setCount);
@@ -93,6 +129,8 @@ function TodoList() {
           });
         }
         setTasks("");
+        setDesc("");
+        
       });
     } else {
       document.getElementById();
@@ -100,14 +138,61 @@ function TodoList() {
   }
   return (
     <>
+    <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Task</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+          <Form.Group className="mb-3" controlId="taskedit_detail">
+              <Form.Label>Task</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Task"
+                value={editTaskVal}
+                autoFocus
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="ControlInput2">
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+              as="textarea" rows={3} 
+                placeholder="Description"
+                value={editDescVal}
+                autoFocus
+              />
+            </Form.Group>
+            <Form.Group
+              className="mb-3"
+              controlId="ControlInput3"
+            >
+              <Form.Label>Time</Form.Label>
+              <Form.Control
+                type="datetime-local"
+                placeholder=""
+                 value={editTimeVal}
+                autoFocus
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleClose}>
+            Update
+          </Button>
+        </Modal.Footer>
+      </Modal>
       <div className="">
         <h1 className="text-center">
           {localStorage.getItem("organisation")} TodoList
         </h1>
-        <div className="container">
+        <div className="container-fluid">
           <div className="row">
             {/* {submitTaskAdd}  using directly like this problematic */}
-            <div className="card col-md-6 offset-md-3 ">
+            <div className="card col-md-8 offset-md-2 ">
               <h3 className="text-center">
                 {localStorage.getItem("userName")} have {totalcountRecord}{" "}
                 Todos
@@ -127,6 +212,7 @@ function TodoList() {
                       value={task}
                       onChange={changeTasks}
                       checked
+                      autocomplete="off"
                     />
                   </div>
                   <div className="form-group">
@@ -137,19 +223,22 @@ function TodoList() {
                       type="datetime-local"
                       id="tasktime"
                       className="form-control"
+                      onChange={changeTime}
+                      value={timeVal}
                     />
                   </div>
                   <div className="form-group">
-                    <label className="text-muted" for="email">
-                      Email:
+                    <label className="text-muted" for="description">
+                      Description
                     </label>
-                    <input
-                      type="email"
-                      id="emailId"
+                    <textarea
+                    rows="5"
+                      type="text"
                       className="form-control"
-                      placeholder="Enter Email"
-                      onChange={checkEmail}
-                    />
+                      placeholder="Enter Description"
+                      onChange={changeText}
+                      value={desc}
+                    ></textarea>
                   </div>
                   <div className="form-group">
                     <button className="btn btn-success mt-1" onClick={saveTask}>
@@ -167,7 +256,7 @@ function TodoList() {
             <input class="form-control border-secondary rounded-pill pr-5" type="search" placeholder="search" id="search_input" onChange={changeSearch}/> 
         </div>
         <div class="col-auto">
-            <button class="btn btn btn-success  border-0 rounded-pill" onClick={seachByTask} type="button">
+            <button class="btn btn btn-success  border-0 rounded-pill"  type="button">
                 Search
             </button>
         </div>
@@ -178,7 +267,7 @@ function TodoList() {
                       <th scope="col">#</th>
                       <th scope="col">Task ID</th>
                       <th scope="col">Task</th>
-                      <th scope="col">Email</th>
+                      <th scope="col">Description</th>
                       <th>Date</th>
                       <th>Time</th>
                       <th>Action</th>
@@ -213,28 +302,28 @@ function TodoList() {
                             )}
                           </td>
                           <td>{res.id}</td>
-                          <td>
+                          <td style={{wordwWrap: "break-word",minWidth: "160px" ,maxWidth: "260px"}}>
                             {res.active ? (
-                              <div className={`class_${res.id}`}>
+                              <div className={`class_${res.id}` }>
                                 <s>{res.taskrow}</s>
                               </div>
                             ) : (
-                              <span className={`class_${res.id}`}>
+                              <span className={`class_${res.id}`} id={`task_${res.id}`}>
                                 {res.taskrow}
                               </span>
                             )}
                           </td>
-                          <td>{res.emailId}</td>
+                          <td style={{wordWrap: "break-word",minWidth: "160px",maxWidth: "360px"}}>{res.description}</td>
                           <td>{dateTime}</td>
                           <td>
                             {new Date(
                               new Date(res.deadLine)
-                            ).toLocaleTimeString()}
+                            ).toLocaleTimeString([],{hour: '2-digit', minute:'2-digit'})}
                           </td>
                           <td>
-                            <button type="button" className="btn btn-primary">
-                              Edit
-                            </button>
+                            <Button variant="primary" onClick={()=>handleShow(res)}>
+                                Edit
+                            </Button>
                           </td>
                         </tr>
                       );
