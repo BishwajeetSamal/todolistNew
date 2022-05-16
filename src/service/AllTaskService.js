@@ -31,6 +31,12 @@ class AllTaskService {
     });
   }
 
+  updateTaskById(data) {
+    return axios.put(TODOLIST_API_BASE_URL + "/updatetask" ,data, {
+      headers: { Authorization: localStorage.getItem("token") },
+    });
+  }
+
 }
 
 export default new AllTaskService();

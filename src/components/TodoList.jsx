@@ -14,21 +14,38 @@ function TodoList() {
   const [editTaskVal, setEditTaskVal] = useState("");
   const [editDescVal, setEditDescVal] = useState("");
   const [editTimeVal, setEditTimeVal] = useState("");
+  const [editId,setEditId] = useState("");
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    let getTask = {
+      taskrow: editTaskVal,
+      id: editId,
+      userTime: editTimeVal,
+      description: editDescVal,
+    };
+    console.log(editTaskVal);
+    console.log(getTask);
+  AllTaskService.updateTaskById(getTask).then((res)=>{
+    if(res!=null){
+      AllTaskService.getAlldataOnload(1).then((resp) => {
+        if (resp) {
+          console.log(resp);
+          let dta = resp.data.obj.tasks || [];
+          let setCount = resp.data.obj.count || 0;
+          setSubmitTaskAdd(dta);
+          setTotalCountRecord(setCount);
+        }
+      });
+    }
+  })
+    setShow(false);
+  };
   const handleShow = (data) => {
-    console.log("data==========================>>>");
-    console.log(data);
+
     setEditTaskVal(data.taskrow);
     setEditDescVal(data.description);
-    setEditTimeVal(data.deadLine);
-    
-    
-    console.log(editTimeVal);
-    //  let taskName = document.getElementById("task_"+id).innerHTML;
-    // console.log(taskName);
-    
-    //  document.getElementById("taskedit_detail").innerHTML=taskName;
+    setEditTimeVal(seTimeVal);
+    setEditId(data.id);
     setShow(true);
   };
 
@@ -80,12 +97,25 @@ function TodoList() {
 
   function changeText(e){
     setDesc(e.target.value);
-    console.log(e.target.value);
   }
 
   let changeSearch = (e) =>{
     setSearchText(e.target.value);
   }
+  let changeModalTime=(e)=>{
+    setEditTimeVal(e.target.value);
+  }
+
+  let changeEditDesc=(e)=>{
+    setEditDescVal(e.target.value);
+  }
+
+  let changeEditTask=(e)=>{
+    console.log(e.target.value);
+    setEditTaskVal(e.target.value);
+  }
+  
+  
 
   // function seachByTask(){
   //   AllTaskService.getSearchData(searchText).then((res) => {
@@ -150,6 +180,13 @@ function TodoList() {
                 type="text"
                 placeholder="Task"
                 value={editTaskVal}
+                onChange={changeEditTask}
+                autoFocus
+              />
+              <Form.Control
+                type="hidden"
+                placeholder="Task"
+                value={editId}
                 autoFocus
               />
             </Form.Group>
@@ -159,6 +196,7 @@ function TodoList() {
               as="textarea" rows={3} 
                 placeholder="Description"
                 value={editDescVal}
+                onChange={changeEditDesc}
                 autoFocus
               />
             </Form.Group>
@@ -171,6 +209,7 @@ function TodoList() {
                 type="datetime-local"
                 placeholder=""
                  value={editTimeVal}
+                 onChange={changeModalTime}
                 autoFocus
               />
             </Form.Group>
