@@ -172,10 +172,10 @@ function RegisterComponent() {
               onChange={changeMobile}
             />
           </div>
-          <div className="p-2">
+          <div className="p-2 text-center">
             <button
               type="submit"
-              className="btn btn-primary"
+              className="btn btn-primary w-50 m-2"
               onClick={registerUser}
             >
               Submit
