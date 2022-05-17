@@ -8,12 +8,13 @@ function LogoutComponent() {
         UserService.userLogout().then((res) => {
           if(res.data.status===200){
             localStorage.clear();
-            navigate("/LoginComponent");
+            
           }
+          navigate("/LoginComponent");
         });
       }, []);
   return (
-    <div>Logout</div>
+    <div></div>
   )
 }
 
