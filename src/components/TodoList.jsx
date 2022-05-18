@@ -206,7 +206,7 @@ function TodoList() {
             >
               <Form.Label>Time</Form.Label>
               <Form.Control
-                type="datetime-local"
+                type="date"
                 placeholder=""
                  value={editTimeVal}
                  onChange={changeModalTime}
@@ -259,11 +259,12 @@ function TodoList() {
                       Add Due Date:
                     </label>
                     <input
-                      type="datetime-local"
+                      type="date"
                       id="tasktime"
                       className="form-control"
                       onChange={changeTime}
                       value={timeVal}
+                      min={new Date().toISOString().split("T")[0]}
                     />
                   </div>
                   <div className="form-group">
