@@ -93,8 +93,23 @@ function RegisterComponent() {
     setDob(e.target.value);
   }
   function changeMobile(e) {
-    setContactNo(e.target.value);
+      setContactNo(e.target.value); 
+    }
+  
+//check whether the mobile number is 10 digit or not.
+  function checkMoblieNo(){
+    if(contactNo.length>10 || contactNo.length<10){
+      
+      document.getElementById("wrong_ContactNo").innerHTML = "Enter 10 digit mobile number";
+        document.getElementById("wrong_ContactNo").style.display = "block";
+        document.getElementById("registerBtn").disabled = true;
+        
+  }else{
+    document.getElementById("wrong_ContactNo").style.display = "none";
+    document.getElementById("wrong_ContactNo").innerHTML = "";
+    document.getElementById("registerBtn").disabled = false;
   }
+}
 
   function registerUser(e) {
     e.preventDefault();
@@ -158,7 +173,7 @@ function RegisterComponent() {
           }else{
             document.getElementById(""+column+"").style.borderColor ="";
           }
-
+          
           
         }
       });
@@ -246,7 +261,7 @@ function RegisterComponent() {
           <div className="form-group">
             <label>DOB</label>
             <input
-              type="text"
+              type="date"
               className="form-control"
               id="gender"
               placeholder="Enter DOB"
@@ -256,18 +271,22 @@ function RegisterComponent() {
           <div className="form-group">
             <label>Contact Number</label>
             <input
-              type="text"
+              type="number"
               className="form-control"
               id="contactNo"
-              placeholder="Enter Contact Number"
+              placeholder="0000000000"
               onChange={changeMobile}
+              onBlur={checkMoblieNo}
+              autoComplete="off"
             />
+            <div id="wrong_ContactNo" style={{ color: "red" ,display:"none"}}></div>
           </div>
           <div className="p-2 text-center">
             <button
               type="submit"
               className="btn btn-primary w-50 m-2"
               onClick={registerUser}
+              id="registerBtn"
             >
               Submit
             </button>
