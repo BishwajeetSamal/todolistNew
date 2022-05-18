@@ -42,7 +42,7 @@ function LoginComponent() {
     }
   }
   return (
-    <div className="container">
+    <div className="container w-50">
       <h2>
         <strong>
           <u>Login</u>
@@ -50,13 +50,13 @@ function LoginComponent() {
       </h2>
       <form>
         <div className="form-group">
-          <label>Email address</label>
+          <label>UserName</label>
           <input
             type="email"
             className="form-control"
             id="emial"
             aria-describedby="emailHelp"
-            placeholder="Enter email"
+            placeholder="Enter email or UserName"
             onChange={ChangeUserName}
           />
         </div>

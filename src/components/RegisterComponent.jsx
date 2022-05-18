@@ -266,6 +266,7 @@ function RegisterComponent() {
               id="gender"
               placeholder="Enter DOB"
               onChange={changeDOB}
+              min="1900-01-01" max={new Date().toISOString().split("T")[0]}
             />
           </div>
           <div className="form-group">
