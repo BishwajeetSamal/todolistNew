@@ -76,15 +76,18 @@ function TodoList() {
   }, [pageNumber,searchText]);
 
   function makeTrue(id) {
+   
     AllTaskService.updateLineOnTask(id).then((res) => {
-      if (res.data.active === true) {
-        let text = document.getElementsByClassName("class_" + res.data.id)[0]
-          .innerText;
-        document.getElementsByClassName("class_" + res.data.id)[0].innerHTML =
-          "<s>" + text + "</s>";
-      }
-      // submitTaskAdd.push(res.data);
-      // setSubmitTaskAdd(submitTaskAdd);
+      console.log(res);
+      if(res!=null){
+        let text = document.getElementsByClassName("class_" + res.data.obj.id)[0].innerText;
+          if(res.data.obj.active===true){
+            document.getElementsByClassName("class_" + res.data.obj.id)[0].innerHTML =
+            "<s>" + text + "</s>";
+          }else{
+        document.getElementsByClassName("class_" + res.data.obj.id)[0].innerHTML =text;
+    }
+  }
     });
   }
 
@@ -228,17 +231,17 @@ function TodoList() {
         </Modal.Footer>
       </Modal>
       <div className="">
-        <h1 className="text-center">
+        <h3 className="text-center">
           {localStorage.getItem("organisation")} TodoList
-        </h1>
+        </h3>
         <div className="container-fluid">
           <div className="row">
             {/* {submitTaskAdd}  using directly like this problematic */}
             <div className="card col-md-8 offset-md-2 ">
-              <h3 className="text-center">
+              <h5 className="text-center">
                 {localStorage.getItem("userName")} have {totalcountRecord}{" "}
                 Todos
-              </h3>
+              </h5>
               <div className="card-body">
                 <form>
                   <div className="text-center text-muted">
@@ -329,20 +332,21 @@ function TodoList() {
                           }}
                         >
                           <td>
-                            {res.active ? (
+                            {res.active?
                               <input
                                 type="checkbox"
                                 value={res.id}
                                 onClick={() => makeTrue(res.id)}
                                 checked
-                              />
-                            ) : (
+                              />:
+
                               <input
                                 type="checkbox"
                                 value={res.id}
                                 onClick={() => makeTrue(res.id)}
+                                
                               />
-                            )}
+                            }
                           </td>
                           <td>{res.id}</td>
                           <td style={{wordwWrap: "break-word",minWidth: "160px" ,maxWidth: "260px"}}>
