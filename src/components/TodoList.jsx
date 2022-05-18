@@ -298,11 +298,11 @@ function TodoList() {
         <div class="col col-md-4">
             <input class="form-control border-secondary rounded-pill pr-5" type="search" placeholder="search" id="search_input" onChange={changeSearch}/> 
         </div>
-        <div class="col-auto">
+        {/* <div class="col-auto">
             <button class="btn btn btn-success  border-0 rounded-pill"  type="button">
                 Search
             </button>
-        </div>
+        </div> */}
     </div>
                 <table className="table table-hover">
                   <thead>
