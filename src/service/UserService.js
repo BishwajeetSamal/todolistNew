@@ -20,6 +20,10 @@ class UserService {
     const res =await axios.post(TODOLIST_API_BASE_URL + "/logout",null,config);
     return res;
   }
+
+  checkEmail(emailId){
+    return axios.get(TODOLIST_API_BASE_URL + "/checkEmail/"+emailId);
+  }
 }
 
 export default new UserService();

@@ -38,7 +38,7 @@ function LoginComponent() {
       });
     } else {
       document.getElementById("notFilled").innerHTML =
-        "Please Enter all fields !";
+        "Please Enter Details In All Fields !";
     }
   }
   return (

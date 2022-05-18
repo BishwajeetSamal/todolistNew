@@ -22,7 +22,41 @@ function RegisterComponent() {
 
   function ChangeEmailId(e) {
     setEmailId(e.target.value);
+    
   }
+
+  function CheckEmailIsPresent(){
+    let emailValid = emailValidation(emailId);
+            if(emailValid){
+              document.getElementById("emailId").style.borderColor="";
+              document.getElementById("wrong_email").innerHTML="";
+              document.getElementById("wrong_email").style.display="none";
+              
+              UserService.checkEmail(emailId).then((resp)=>{  
+                if(resp.data.status==409){
+                  document.getElementById("emailId").style.borderColor="red";
+                  document.getElementById("wrong_email").innerHTML = "Email Already Exist";
+                  document.getElementById("wrong_email").style.display="block";
+                }
+              })
+            }else{
+              document.getElementById("emailId").style.borderColor="red";
+              document.getElementById("wrong_email").innerHTML="Enter valid emailId";
+              document.getElementById("wrong_email").style.display="block";
+            }
+   
+  }
+
+   //email validation function
+   function emailValidation(email){
+    const regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    if(regex.test(email) === false){
+        return false;
+    }
+    return true;
+    
+}
+
   function changeUserName(e) {
     setUserName(e.target.value);
   }
@@ -63,7 +97,6 @@ function RegisterComponent() {
       contactNo !== ""
     ) {
       UserService.createUser(user).then((res) => {
-        console.log(res);
         if (res.data.status === 200) {
           document.getElementById("wrong_email").innerHTML = "";
           navigate("/LoginComponent");
@@ -78,13 +111,45 @@ function RegisterComponent() {
         document.getElementById("notFilled").innerHTML = "";
       });
     } else {
+      const chkValid = ["firstName","lastName","emailId","userName","userPassword","organisation","gender","contactNo"];
+      chkValid.map((column)=>{
+        if(document.getElementById(""+column+"").value ==="" ||document.getElementById(""+column+"").value ===null){
+          console.log(column);
+          document.getElementById(""+column+"").style.borderColor ="red";
+        }else{
+          //checking if email is in correct format opr not
+          if(column==="emailId"){
+            let emailValid = emailValidation(document.getElementById("emailId").value);
+            if(emailValid){
+              document.getElementById("emailId").style.borderColor="";
+              document.getElementById("wrong_email").innerHTML="";
+              document.getElementById("wrong_email").style.display="none";
+            }else{
+              document.getElementById("emailId").style.borderColor="red";
+              document.getElementById("wrong_email").innerHTML="Enter valid emailId";
+              document.getElementById("wrong_email").style.display="block";
+             
+              
+            }
+         
+          }else{
+            document.getElementById(""+column+"").style.borderColor ="";
+          }
+
+          
+        }
+      });
+      
       document.getElementById("notFilled").innerHTML =
-        "Please Enter all fields !";
+        "Please Enter Details In All Fields !";
     }
+
+   
+
   }
   return (
     <div>
-      <div className="container">
+      <div className="container w-50">
         <h2>
           <strong>
             <u>Register</u>
@@ -119,8 +184,9 @@ function RegisterComponent() {
               id="emailId"
               placeholder="Enter EmailId"
               onChange={ChangeEmailId}
+              onBlur={CheckEmailIsPresent}
             />
-            <div id="wrong_email" style={{ color: "red" }}></div>
+            <div id="wrong_email" style={{ color: "red" ,display:"none"}}></div>
           </div>
           <div className="form-group">
             <label>UserName</label>
@@ -147,7 +213,7 @@ function RegisterComponent() {
             <input
               type="text"
               className="form-control"
-              id="organization"
+              id="organisation"
               placeholder="Enter Organization"
               onChange={changeOrganisation}
             />
