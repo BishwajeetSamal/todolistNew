@@ -15,6 +15,7 @@ function TodoList() {
   const [editDescVal, setEditDescVal] = useState("");
   const [editTimeVal, setEditTimeVal] = useState("");
   const [editId,setEditId] = useState("");
+  var date = new Date();
 
   const handleClose = () => {
     let getTask = {
@@ -206,10 +207,12 @@ function TodoList() {
             >
               <Form.Label>Time</Form.Label>
               <Form.Control
-                type="date"
+                type="datetime-local"
                 placeholder=""
                  value={editTimeVal}
+                 min={new Date(date.getTime() + date.getTimezoneOffset() * -60 * 1000).toISOString().slice(0, 19)}
                  onChange={changeModalTime}
+                 
                 autoFocus
               />
             </Form.Group>
@@ -259,12 +262,12 @@ function TodoList() {
                       Add Due Date:
                     </label>
                     <input
-                      type="date"
+                      type="datetime-local"
                       id="tasktime"
                       className="form-control"
                       onChange={changeTime}
                       value={timeVal}
-                      min={new Date().toISOString().split("T")[0]}
+                      min={new Date(date.getTime() + date.getTimezoneOffset() * -60 * 1000).toISOString().slice(0, 19)}
                     />
                   </div>
                   <div className="form-group">
