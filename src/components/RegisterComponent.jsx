@@ -33,7 +33,7 @@ function RegisterComponent() {
               document.getElementById("wrong_email").style.display="none";
               
               UserService.checkEmail(emailId).then((resp)=>{  
-                if(resp.data.status==409){
+                if(resp.data.status===409){
                   document.getElementById("emailId").style.borderColor="red";
                   document.getElementById("wrong_email").innerHTML = "Email Already Exist";
                   document.getElementById("wrong_email").style.display="block";
@@ -46,6 +46,29 @@ function RegisterComponent() {
             }
    
   }
+
+  function CheckUserNameIsPresent(){
+            if(document.getElementById("userName").value!=null){
+              document.getElementById("userName").style.borderColor="";
+              document.getElementById("wrong_userName").innerHTML="";
+              document.getElementById("wrong_userName").style.display="none";
+              
+              UserService.checkUserName(userName).then((resp)=>{  
+                if(resp.data.status===409){
+                  document.getElementById("userName").style.borderColor="red";
+                  document.getElementById("wrong_userName").innerHTML = "UserName Already Exist";
+                  document.getElementById("wrong_userName").style.display="block";
+                }
+              })
+            }else{
+              document.getElementById("userName").style.borderColor="red";
+              document.getElementById("wrong_userName").innerHTML="Enter UserName";
+              document.getElementById("wrong_userName").style.display="block";
+            }
+   
+  }
+
+
 
    //email validation function
    function emailValidation(email){
@@ -196,7 +219,9 @@ function RegisterComponent() {
               id="userName"
               placeholder="Enter UserName"
               onChange={changeUserName}
+              onBlur={CheckUserNameIsPresent}
             />
+             <div id="wrong_userName" style={{ color: "red" ,display:"none"}}></div>
           </div>
           <div className="form-group">
             <label>Password</label>

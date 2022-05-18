@@ -24,6 +24,11 @@ class UserService {
   checkEmail(emailId){
     return axios.get(TODOLIST_API_BASE_URL + "/checkEmail/"+emailId);
   }
+
+
+checkUserName(userName){
+  return axios.get(TODOLIST_API_BASE_URL + "/checkUserName/"+userName);
+}
 }
 
 export default new UserService();
