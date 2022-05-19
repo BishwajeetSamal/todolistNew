@@ -350,7 +350,7 @@ function TodoList() {
                           <td>
                             {new Date(
                               new Date(res.deadLine)
-                            ).toLocaleTimeString([],{hour: '2-digit', minute:'2-digit'})}
+                            ).toLocaleTimeString([],{hour: '2-digit', minute:'2-digit',second:'2-digit'})}
                           </td>
                           <td>
                             <Button variant="primary" onClick={()=>handleShow(res)}>
