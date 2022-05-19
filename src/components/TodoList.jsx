@@ -119,27 +119,11 @@ function TodoList() {
     setEditTaskVal(e.target.value);
   }
   
-  
-
-  // function seachByTask(){
-  //   AllTaskService.getSearchData(searchText).then((res) => {
-  //     if (res) {
-  //       let dta = res.data.obj.tasks.content || [];
-  //       setSubmitTaskAdd(dta);
-  //     }
-  //   });
-
-  // }
-  // function validation(email) {
-  //   console.log(email);
-  //   console.log(Date.now());
-  // }
   function saveTask(e) {
     let getTime = document.getElementById("tasktime").value;
     let getDesc = desc;
-    // validation(email);
     e.preventDefault();
-    if (task !== "") {
+    if (task.trim() !== "" && getTime!="" && getDesc.trim()!="") {
       let getTask = {
         taskrow: task,
         userId: 1,
@@ -164,10 +148,13 @@ function TodoList() {
         }
         setTasks("");
         setDesc("");
+        document.getElementById("showMsg").innerHTML="";
+      document.getElementById("showMsg").style.display = "none";
         
       });
     } else {
-      document.getElementById();
+      document.getElementById("showMsg").innerHTML="Please fill all details";
+      document.getElementById("showMsg").style.display = "block";
     }
   }
   return (
@@ -291,9 +278,7 @@ function TodoList() {
                       Save
                     </button>
                   </div>
-                  <h2 id="showMsg" className="hideMessage">
-                    This heading is hidden
-                  </h2>
+                  <div id="showMsg" style={{ color: "red" ,display:"none"}}></div>
 
                   <span style={{ marginTop: "10px" }}></span>
                 </form>
