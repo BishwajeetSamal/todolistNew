@@ -1,9 +1,12 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState,useContext } from "react";
+import { Route, useNavigate } from "react-router-dom";
 import UserService from "../service/UserService";
+import TodoList from "./TodoList";
+import { TaskContext } from "../App";
 
 function LoginComponent() {
   const navigate = useNavigate();
+  const [auth,setAuth] = useContext(TaskContext);
   const [userName, setUserName] = useState("");
   const [userPassword, setUserPassword] = useState("");
   function ChangeUserName(e) {
@@ -28,7 +31,9 @@ function LoginComponent() {
           localStorage.setItem("token", res.data.obj.token);
           localStorage.setItem("userName", res.data.obj.userName);
           localStorage.setItem("organisation", res.data.obj.organisation);
-          navigate("/TodoList");
+          // <Route exact path="/TodoList" element={<TodoList />}/>
+          setAuth(true);
+          navigate("/TodoList")
         } else if (res.data.status === 404 || res.data.status === 401) {
           document.getElementById("wrong_email").innerHTML =
             "Please Enter valid Credentials !";
